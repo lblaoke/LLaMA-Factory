@@ -71,10 +71,10 @@ class AlpacaDatasetConverter(DatasetConverter):
 
         query = []
         if self.dataset_attr.prompt and example[self.dataset_attr.prompt]:
-            query.append(example[self.dataset_attr.prompt])
+            query.append(example[self.dataset_attr.prompt]["role" == "user"]["content"])
 
         if self.dataset_attr.query and example[self.dataset_attr.query]:
-            query.append(example[self.dataset_attr.query])
+            query.append(example[self.dataset_attr.query]["role" == "user"]["content"])
 
         prompt.append({"role": Role.USER.value, "content": "\n".join(query)})  # "prompt\nquery"
 
@@ -86,12 +86,12 @@ class AlpacaDatasetConverter(DatasetConverter):
                 response = [{"role": Role.ASSISTANT.value, "content": ""}] + response
         elif (
             self.dataset_attr.ranking
-            and isinstance(example[self.dataset_attr.chosen], str)
-            and isinstance(example[self.dataset_attr.rejected], str)
+            and isinstance(example[self.dataset_attr.chosen]["role" == "assistant"]["content"], str)
+            and isinstance(example[self.dataset_attr.rejected]["role" == "assistant"]["content"], str)
         ):  # pairwise example
             response = [
-                {"role": Role.ASSISTANT.value, "content": example[self.dataset_attr.chosen]},
-                {"role": Role.ASSISTANT.value, "content": example[self.dataset_attr.rejected]},
+                {"role": Role.ASSISTANT.value, "content": example[self.dataset_attr.chosen]["role" == "assistant"]["content"]},
+                {"role": Role.ASSISTANT.value, "content": example[self.dataset_attr.rejected]["role" == "assistant"]["content"]},
             ]
         elif self.dataset_attr.response and isinstance(example[self.dataset_attr.response], str):  # normal example
             response = [{"role": Role.ASSISTANT.value, "content": example[self.dataset_attr.response]}]

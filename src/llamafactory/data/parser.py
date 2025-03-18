@@ -48,9 +48,9 @@ class DatasetAttr:
     rejected: Optional[str] = None
     kto_tag: Optional[str] = None
     # alpaca columns
-    prompt: Optional[str] = "instruction"
-    query: Optional[str] = "input"
-    response: Optional[str] = "output"
+    prompt: Optional[str] = None
+    query: Optional[str] = None
+    response: Optional[str] = None
     history: Optional[str] = None
     # sharegpt columns
     messages: Optional[str] = "conversations"
@@ -138,7 +138,13 @@ def get_dataset_list(dataset_names: Optional[list[str]], dataset_dir: str) -> li
             elif has_om_url and (use_openmind() or not has_hf_url):
                 dataset_attr = DatasetAttr("om_hub", dataset_name=dataset_info[name]["om_hub_url"])
             else:
-                dataset_attr = DatasetAttr("hf_hub", dataset_name=dataset_info[name]["hf_hub_url"])
+                dataset_attr = DatasetAttr(
+                    "hf_hub",
+                    dataset_name = dataset_info[name]["hf_hub_url"],
+                    query = "instruction",
+                    # chosen = dataset_info[name]["colnums"]["chosen"],
+                    # rejected = dataset_info[name]["colnums"]["rejected"],
+                )
         elif "script_url" in dataset_info[name]:
             dataset_attr = DatasetAttr("script", dataset_name=dataset_info[name]["script_url"])
         else:

@@ -679,5 +679,19 @@
       "prompt": "content"
     },
     "folder": "python"
+  },
+  "Skywork-Reward-Preference-80K-v0.1": {
+    "hf_hub_url": "Skywork/Skywork-Reward-Preference-80K-v0.1",
+    "ranking": true,
+    "split": "train",
+    "folder": "data",
+    "colnums": {
+      "query": "chosen",
+      "chosen": "chosen",
+      "rejected": "rejected"
+    }
+  },
+  "alpaca_eval": {
+    "file_name": "/home/li4468/CARDS/alpaca_eval.json"
   }
 }
